@@ -30,15 +30,11 @@ namespace FerryLegacy
         public Ferry GetNextAvailable(TimeSpan time)
         {
             var available = _boatAvailability.FirstOrDefault(x => time >= x.Value);
-            Ferry toReturn = null;
-            if (available.Key != 0)
-            {
-
-                _boatAvailability.Remove(available.Key);
-                 toReturn = _boats.Single(x => x.Id == available.Key);
-                _boats.Remove(toReturn);
-            }
-            return toReturn;
+            if (available.Key == 0) return null;
+            _boatAvailability.Remove(available.Key);
+            var boat = _boats.Single(x => x.Id == available.Key);
+            _boats.Remove(boat);
+            return boat;
         }
     }
 }
