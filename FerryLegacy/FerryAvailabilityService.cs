@@ -8,8 +8,8 @@ namespace FerryLegacy
     {
         private readonly Ports _ports;
         private readonly Ferries _ferries;
-        private readonly TimeTables _timeTables;
-        private readonly PortManager _portManager;
+        public readonly TimeTables _timeTables;
+        public readonly PortManager _portManager;
 
         public FerryAvailabilityService(Ports ports, Ferries ferries, TimeTables timeTables, PortManager portManager)
         {
@@ -26,35 +26,57 @@ namespace FerryLegacy
 
             foreach (var entry in allEntries)
             {
-                var ferry = FerryManager.CreateFerryJourney(ports, entry);
-                if (ferry != null)
-                {
-                    BoatReady(entry, ferry.Destination, ferry);
-                }
+                PortModel origin = ports.Single(x => x.Id == entry.OriginId);
+                PortModel destination = ports.Single(x => x.Id == entry.DestinationId);
+
+                var ferryJourney = new FerryJourney(origin, destination, entry.Time);
+
+                var time1 = FerryModule.TimeReady(entry, destination);
+                destination.AddBoat(time1, ferryJourney.Ferry);
+
                 if (entry.OriginId == portId)
                 {
                     if (entry.Time >= time)
                     {
-                        if (ferry != null)
-                        {
-                            return ferry.Ferry;
-                        }
+                        return ferryJourney.Ferry;
                     }
                 }
             }
 
-            return null;
+            throw new CantFindFerryException(portId, time);
+
+            //Ferry ferry;
+
+            //if (_timeTables.All().SelectMany(x => x.Entries).Any(x => x.OriginId == portId && x.Time >= time))
+            //{
+            //    var ports = _portManager.PortModels();
+            //    TimeTableEntry relevantTimetable =
+            //        _timeTables.All().SelectMany(x => x.Entries).First(x => x.OriginId == portId && x.Time >= time);
+
+            //    var ferryJourney = new FerryJourney
+            //    {
+            //        Origin = ports.Single(x => x.Id == relevantTimetable.OriginId),
+            //        Destination = ports.Single(x => x.Id == relevantTimetable.DestinationId)
+            //    };
+
+            //    BoatReady(relevantTimetable, ferryJourney.Destination, ferryJourney);
+
+            //    ferry = ferryJourney.Ferry;
+            //}
+            //else
+            //{
+            //    throw new CantFindFerryException(portId, time);
+            //}
+
+            //return ferry;
         }
+    }
 
-        private static void BoatReady(TimeTableEntry timetable, PortModel destination, FerryJourney ferryJourney)
+    public class CantFindFerryException : Exception
+    {
+        public CantFindFerryException(int portId, TimeSpan time)
+            : base(string.Format("Hang on, why can't I find a ferry journey from port Id {0} at {1}", portId, time))
         {
-            if (ferryJourney.Ferry == null)
-                FerryManager.AddFerry(timetable, ferryJourney);
-
-            var ferry = ferryJourney.Ferry;
-
-            var time = FerryModule.TimeReady(timetable, destination);
-            destination.AddBoat(time, ferry);
         }
     }
 }
