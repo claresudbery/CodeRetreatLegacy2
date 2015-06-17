@@ -23,6 +23,7 @@ namespace FerryLegacy
         {
             var ports = _portManager.PortModels();
             var allEntries = _timeTables.All().SelectMany(x => x.Entries).OrderBy(x => x.Time).ToList();
+            Ferry resultingFerry = null;
 
             foreach (var entry in allEntries)
             {
@@ -37,13 +38,14 @@ namespace FerryLegacy
                     {
                         if (ferry != null)
                         {
-                            return ferry.Ferry;
+                            resultingFerry = ferry.Ferry;
+                            break;
                         }
                     }
                 }
             }
 
-            return null;
+            return resultingFerry;
         }
 
         private static void BoatReady(TimeTableEntry timetable, PortModel destination, FerryJourney ferryJourney)

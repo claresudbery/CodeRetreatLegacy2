@@ -9,8 +9,8 @@ namespace FerryLegacy
         public int Id { get; set; }
         public string Name { get; set; }
 
-        private readonly Dictionary<int, TimeSpan> _boatAvailability = new Dictionary<int, TimeSpan>();
-        private readonly List<Ferry> _boats = new List<Ferry>();
+        public readonly Dictionary<int, TimeSpan> _boatAvailability = new Dictionary<int, TimeSpan>();
+        public readonly List<Ferry> _boats = new List<Ferry>();
 
         public PortModel(Port port)
         {
@@ -30,11 +30,15 @@ namespace FerryLegacy
         public Ferry GetNextAvailable(TimeSpan time)
         {
             var available = _boatAvailability.FirstOrDefault(x => time >= x.Value);
-            if (available.Key == 0) return null;
-            _boatAvailability.Remove(available.Key);
-            var boat = _boats.Single(x => x.Id == available.Key);
-            _boats.Remove(boat);
-            return boat;
+            Ferry toReturn = null;
+            if (available.Key != 0)
+            {
+
+                _boatAvailability.Remove(available.Key);
+                 toReturn = _boats.Single(x => x.Id == available.Key);
+                _boats.Remove(toReturn);
+            }
+            return toReturn;
         }
     }
 }

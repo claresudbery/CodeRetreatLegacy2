@@ -6,8 +6,8 @@ namespace FerryLegacy
 {
     public class PortManager
     {
-        private readonly Ports _ports;
-        private readonly Ferries _ferries;
+        public readonly Ports _ports;
+        public readonly Ferries _ferries;
 
         public PortManager(Ports ports, Ferries ferries)
         {
