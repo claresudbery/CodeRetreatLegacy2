@@ -34,7 +34,7 @@ namespace FerryLegacy
             TestCommands();
         }
 
-        private static void Start()
+        public static void Start()
         {
             WireUp();
 

@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="GoldenMasterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SaffSqueezeTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
