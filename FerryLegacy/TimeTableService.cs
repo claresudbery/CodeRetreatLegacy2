@@ -6,9 +6,9 @@ namespace FerryLegacy
 {
     public class TimeTableService
     {
-        private readonly TimeTables _timeTables;
+        public readonly TimeTables _timeTables;
         private readonly Bookings _bookings;
-        private readonly FerryAvailabilityService _ferryService;
+        public readonly FerryAvailabilityService _ferryService;
 
         public TimeTableService(TimeTables timeTables, Bookings bookings, FerryAvailabilityService ferryService)
         {

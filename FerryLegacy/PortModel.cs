@@ -29,12 +29,21 @@ namespace FerryLegacy
 
         public Ferry GetNextAvailable(TimeSpan time)
         {
+            Ferry nextAvailableFerry;
             var available = _boatAvailability.FirstOrDefault(x => time >= x.Value);
-            if (available.Key == 0) return null;
-            _boatAvailability.Remove(available.Key);
-            var boat = _boats.Single(x => x.Id == available.Key);
-            _boats.Remove(boat);
-            return boat;
+
+            if (available.Key == 0)
+            {
+                nextAvailableFerry = null;
+            }
+            else
+            {
+                _boatAvailability.Remove(available.Key);
+                nextAvailableFerry = _boats.Single(x => x.Id == available.Key);
+                _boats.Remove(nextAvailableFerry);
+            }
+
+            return nextAvailableFerry;
         }
     }
 }

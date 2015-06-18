@@ -6,10 +6,10 @@ namespace FerryLegacy
 {
     public class Program
     {
-        private static TimeTableService _timeTableService;
-        private static JourneyBookingService _bookingService;
-        private static Ports _ports;
-        private static FerryAvailabilityService _ferryService;
+        public static TimeTableService _timeTableService;
+        public static JourneyBookingService _bookingService;
+        public static Ports _ports;
+        public static FerryAvailabilityService _ferryService;
 
         private static void WireUp()
         {

@@ -24,6 +24,8 @@ namespace FerryLegacy
             var ports = _portManager.PortModels();
             var allEntries = _timeTables.All().SelectMany(x => x.Entries).OrderBy(x => x.Time).ToList();
 
+            Ferry foundFerry = null;
+
             foreach (var entry in allEntries)
             {
                 PortModel origin = ports.Single(x => x.Id == entry.OriginId);
@@ -38,12 +40,18 @@ namespace FerryLegacy
                 {
                     if (entry.Time >= time)
                     {
-                        return ferryJourney.Ferry;
+                        foundFerry = ferryJourney.Ferry;
+                        break;
                     }
                 }
             }
 
-            throw new CantFindFerryException(portId, time);
+            if (foundFerry == null)
+            {
+                throw new CantFindFerryException(portId, time);
+            }
+
+            return foundFerry;
 
             //Ferry ferry;
 
