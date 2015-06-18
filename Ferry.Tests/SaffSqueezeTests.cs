@@ -232,18 +232,13 @@ Departures from Tarsonis
 
                 foreach (TimeTableEntry entry in allEntries1)
                 {
-                    FerryJourney ferry1 = new FerryJourney
-                    {
-                        Origin = ports1.Single(x => x.Id == entry.OriginId),
-                        Destination = ports1.Single(x => x.Id == entry.DestinationId)
-                    };
+                    var origin2 = ports1.Single(x => x.Id == entry.OriginId);
+                    var destination1 = ports1.Single(x => x.Id == entry.DestinationId);
+
+                    FerryJourney ferry1 = new FerryJourney(origin2, destination1, entry.Time);
                     if (ferry1 != null)
                     {
                         PortModel destination = ferry1.Destination;
-                        if (ferry1.Ferry == null)
-                        {
-                            ferry1.Ferry = ferry1.Origin.GetNextAvailable(entry.Time);
-                        }
 
                         FerryLegacy.Ferry ferry2 = ferry1.Ferry;
 
@@ -281,18 +276,13 @@ Departures from Tarsonis
             List<TimeTableEntry> allEntries1 = timeTables.All().SelectMany(x => x.Entries).OrderBy(x => x.Time).ToList();
 
             TimeTableEntry entry = allEntries1.First();
-            FerryJourney ferry1 = new FerryJourney
-                {
-                    Origin = ports1.Single(x => x.Id == entry.OriginId),
-                    Destination = ports1.Single(x => x.Id == entry.DestinationId)
-                };
+
+            var origin2 = ports1.Single(x => x.Id == entry.OriginId);
+            var destination1 = ports1.Single(x => x.Id == entry.DestinationId);
+            FerryJourney ferry1 = new FerryJourney(origin2, destination1, entry.Time);
+
             if (ferry1 != null)
             {
-                if (ferry1.Ferry == null)
-                {
-                    ferry1.Ferry = ferry1.Origin.GetNextAvailable(entry.Time);
-                }
-
                 Assert.That(ferry1.Ferry, Is.Not.EqualTo(null));
             }
         }
@@ -309,11 +299,11 @@ Departures from Tarsonis
             List<TimeTableEntry> allEntries1 = timeTables.All().SelectMany(x => x.Entries).OrderBy(x => x.Time).ToList();
 
             TimeTableEntry entry = allEntries1.First();
-            FerryJourney ferry1 = new FerryJourney
-            {
-                Origin = ports1.Single(x => x.Id == entry.OriginId),
-                Destination = ports1.Single(x => x.Id == entry.DestinationId)
-            };
+
+            var origin2 = ports1.Single(x => x.Id == entry.OriginId);
+            var destination1 = ports1.Single(x => x.Id == entry.DestinationId);
+            FerryJourney ferry1 = new FerryJourney(origin2, destination1, entry.Time);
+
             if (ferry1 != null)
             {
                 if (ferry1.Ferry == null)
@@ -347,11 +337,11 @@ Departures from Tarsonis
             List<TimeTableEntry> allEntries1 = timeTables.All().SelectMany(x => x.Entries).OrderBy(x => x.Time).ToList();
 
             TimeTableEntry entry = allEntries1.First();
-            FerryJourney ferry1 = new FerryJourney
-            {
-                Origin = ports1.Single(x => x.Id == entry.OriginId),
-                Destination = ports1.Single(x => x.Id == entry.DestinationId)
-            };
+
+            var origin2 = ports1.Single(x => x.Id == entry.OriginId);
+            var destination1 = ports1.Single(x => x.Id == entry.DestinationId);
+            FerryJourney ferry1 = new FerryJourney(origin2, destination1, entry.Time);
+
             Assert.AreNotEqual(ferry1.Origin._boatAvailability.FirstOrDefault(x => entry.Time >= x.Value).Key, 0);
         }
 

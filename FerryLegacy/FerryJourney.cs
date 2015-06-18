@@ -11,7 +11,7 @@ namespace FerryLegacy
             Destination = destination;
         }
 
-        public Ferry Ferry { get; private set; }
+        public Ferry Ferry { get; set; }
         public PortModel Origin { get; private set; }
         public PortModel Destination { get; private set; }
     }
